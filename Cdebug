@@ -1,0 +1,99 @@
+有头节点时  地址为正常值  插入值时不会改变
+
+
+
+没有头节点时  指针指向null  地址为00000000
+改变指向时地址改变
+而且
+每次传入函数时都是00000000 而不是改变后的新值
+
+
+
+
+
+
+
+ 
+加入引用后  每次传入的为修改后新值
+
+
+
+而不是头指针时  初始指向空的next指针
+不加引用也会每次改变
+
+
+
+
+本质原因是
+地址在传函数时会更新传入的参数地址为初始值
+一旦地址在函数中更改
+再次传入函数时不会更新为更改的新值
+
+和头节点有无没有关系
+不想用引用  又不想有头节点：将地址传回主函数，避免更新为初始值
+#include <iostream>
+using namespace std;
+
+
+
+ struct mylianzhan {
+	int val;
+	struct mylianzhan* next;
+};
+
+
+
+
+struct mylianzhan* initlz() {
+
+	struct mylianzhan* mylz = NULL;
+	//struct mylianzhan* mylz = new struct mylianzhan;
+	//mylz->val = 5;
+	//mylz->next = NULL;
+	return mylz;
+}
+struct mylianzhan* jinzhan(struct mylianzhan* mylz, int val) {
+	cout << mylz<< endl;
+	//cout << mylz->next << endl;
+	struct mylianzhan* node1 = new struct mylianzhan;
+	node1->val = val;
+	node1->next = mylz;
+	mylz = node1;
+	//node1->next = mylz->next;
+	//mylz->next = node1;
+	//cout << mylz->next << endl;
+	cout << mylz << endl;
+	return mylz;
+}
+void printlz(struct mylianzhan* mylz) {
+
+	while (mylz) {
+		//printf("%d\n", mylz->val);
+		cout << mylz->val << endl;
+		mylz = mylz->next;
+	}
+}
+
+int main() {
+	struct mylianzhan *mylz = initlz();
+
+
+	//struct mylianzhan* node1 = new struct mylianzhan;
+	//node1->val = 10;
+	//node1->next = mylz;
+	//mylz = node1;
+
+
+	//struct mylianzhan* node2 = new struct mylianzhan;
+	//node2->val = 20;
+	//node2->next = mylz;
+	//mylz = node2;
+	//cout << mylz->next << endl;
+	mylz=jinzhan(mylz, 30);
+	mylz=jinzhan(mylz, 30);
+	mylz=jinzhan(mylz, 30);
+
+
+	printlz(mylz);
+
+}
